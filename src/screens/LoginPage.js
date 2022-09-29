@@ -58,7 +58,7 @@ export default function LoginPage() {
               onPress={() => {
                 navigation.navigate('HomePage');
               }}>
-              <Text style={{textAlign: 'center', fontSize: 18, color: '#fff'}}>
+              <Text style={{textAlign: 'center', fontSize: 18, color: '#000'}}>
                 Login
               </Text>
             </TouchableOpacity>
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
   bgImage: {
     width: '100%',
     height: 250,
+    bottom: 30
   },
   formInput: {
     marginTop: 10,

@@ -20,11 +20,11 @@ const Register = () => {
       <ScrollView>
         <View style={styles.container}>
           <ImageBackground
-            source={require('../assets/image1.png')}
+            source={require('../assets/image3.png')}
             style={styles.bgImage}
           />
         </View>
-        <View style={{padding: 10}}>
+        <View style={{padding: 1}}>
           <View style={styles.formInput}>
             <Text
               style={{textAlign: 'center', fontSize: 30, fontWeight: 'bold'}}>
@@ -46,21 +46,21 @@ const Register = () => {
           <View style={styles.formInput}>
             <TextInput
               style={styles.textInput}
-              placeholder="Password"
+              placeholder="Enter your contact"
               secureTextEntry={true}
             />
           </View>
           <View style={styles.formInput}>
             <TextInput
               style={styles.textInput}
-              placeholder="Confirm Password"
+              placeholder="Password"
               secureTextEntry={true}
             />
           </View>
 
           <View style={styles.formInput}>
             <TouchableOpacity style={styles.registerBtn}>
-              <Text style={{textAlign: 'center', fontSize: 18, color: '#fff'}}>
+              <Text style={{textAlign: 'center', fontSize: 18, color: '#000'}}>
                 Register
               </Text>
             </TouchableOpacity>
@@ -97,14 +97,14 @@ const Register = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   bgImage: {
     width: '100%',
-    height: 200,
+    height: 250,
+    bottom: 50
   },
   formInput: {
-    marginTop: 10,
     padding: 10,
   },
   textInput: {

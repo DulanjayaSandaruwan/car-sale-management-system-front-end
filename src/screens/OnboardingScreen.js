@@ -52,7 +52,7 @@ export default function OnboardingScreen() {
           onPress={() => {
             navigation.navigate('LoginPage');
           }}>
-          <Text style={{textAlign: 'center', fontSize: 20, color: '#fff'}}>
+          <Text style={{textAlign: 'center', fontSize: 20, color: '#000'}}>
             Getting Start
           </Text>
         </TouchableOpacity>
