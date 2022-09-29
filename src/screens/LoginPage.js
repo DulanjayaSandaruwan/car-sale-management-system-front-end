@@ -9,7 +9,6 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
-  Image,
 } from 'react-native';
 
 export default function LoginPage() {
@@ -101,7 +100,7 @@ const styles = StyleSheet.create({
   bgImage: {
     width: '100%',
     height: 250,
-    bottom: 30
+    bottom: 30,
   },
   formInput: {
     marginTop: 10,
