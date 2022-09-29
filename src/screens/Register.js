@@ -84,7 +84,7 @@ const Register = () => {
                   fontSize: 16,
                   fontWeight: 'bold',
                   color: '#FFCB42',
-                  top:15
+                  top:11
                 }}>
                 Already have an account ? Login here !
               </Text>
