@@ -7,12 +7,38 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Button,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import ImagePicker from 'react-native-image-picker';
 
-export default function AddCar() {
+export default function AddCar({image, onImagePicked}) {
   const navigation = useNavigation();
+
+  const [selectedImage, setSelectedImage] = useState();
+
+  useEffect(() => {
+    if (image) {
+      console.log('useEffect: ' + image);
+      setSelectedImage({uri: image});
+    }
+  }, [image]);
+
+  pickImageHandler = () => {
+    ImagePicker.showImagePicker(
+      {title: 'Pick an Image', maxWidth: 800, maxHeight: 600},
+      response => {
+        if (response.error) {
+          console.log('image error');
+        } else {
+          console.log('Image: ' + response.uri);
+          setSelectedImage({uri: response.uri});
+          onImagePicked({uri: response.uri});
+        }
+      },
+    );
+  };
 
   return (
     <SafeAreaView>
@@ -39,11 +65,20 @@ export default function AddCar() {
           </View>
         </View>
         <View style={{padding: 10}}>
-          <View style={styles.formInput}>
-            <Text
-              style={{textAlign: 'center', fontSize: 30, fontWeight: 'bold'}}>
-              Add a new car
-            </Text>
+          <View style={styles.imageMain}>
+            <View style={styles.imageContainer}>
+              <Image source={selectedImage} style={styles.previewImage} />
+            </View>
+            <View style={styles.addImageBtn}>
+              <TouchableOpacity
+                style={styles.loginBtn}
+                onPress={this.pickImageHandler}>
+                <Text
+                  style={{textAlign: 'center', fontSize: 12, color: '#000'}}>
+                  Upload Image
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <View style={styles.formInput}>
             <TextInput
@@ -52,22 +87,13 @@ export default function AddCar() {
             />
           </View>
           <View style={styles.formInput}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Enter car brand"
-            />
+            <TextInput style={styles.textInput} placeholder="Enter car brand" />
           </View>
           <View style={styles.formInput}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Enter car price"
-            />
+            <TextInput style={styles.textInput} placeholder="Enter car price" />
           </View>
           <View style={styles.formInput}>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Enter fuel type"
-            />
+            <TextInput style={styles.textInput} placeholder="Enter fuel type" />
           </View>
           <View style={styles.formInput}>
             <TextInput
@@ -76,8 +102,7 @@ export default function AddCar() {
             />
           </View>
           <View style={styles.formInput}>
-            <TouchableOpacity
-              style={styles.loginBtn}>
+            <TouchableOpacity style={styles.loginBtn}>
               <Text style={{textAlign: 'center', fontSize: 18, color: '#000'}}>
                 Save
               </Text>
@@ -115,5 +140,28 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#FFCB42',
     borderRadius: 30,
+  },
+  imageMain: {
+    width: '100%',
+    alignItems: 'center',
+  },
+  imageContainer: {
+    marginTop: 15,
+    borderWidth: 1,
+    borderColor: '#FFCB42',
+    backgroundColor: '#eee',
+    width: '60%',
+    height: 100,
+  },
+  addImageBtn: {
+    margin: 8,
+    backgroundColor: '#FFCB42',
+    borderRadius: 20,
+    width: 170,
+    height: 45,
+  },
+  previewImage: {
+    width: '100%',
+    height: '100%',
   },
 });
