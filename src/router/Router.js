@@ -7,6 +7,7 @@ import LoginPage from '../screens/LoginPage';
 import Register from '../screens/Register';
 import HomePage from '../screens/HomePage';
 import AddCar from '../screens/AddCar';
+import ManageCar from '../screens/ManageCar';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,11 @@ export default function Router() {
           options={{headerShown: false}}
           name="AddCar"
           component={AddCar}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="ManageCar"
+          component={ManageCar}
         />
       </Stack.Navigator>
     </NavigationContainer>
