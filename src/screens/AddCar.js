@@ -7,7 +7,6 @@ import {
   Image,
   TextInput,
   ScrollView,
-  Button,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
@@ -126,7 +125,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 25,
   },
   formInput: {
-    marginTop: 10,
+    marginTop: 3,
     padding: 10,
   },
   textInput: {

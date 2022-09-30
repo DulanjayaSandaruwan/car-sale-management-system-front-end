@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -9,11 +9,36 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
-  Image,
 } from 'react-native';
 
 const Register = () => {
   const navigation = useNavigation();
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [contact, setContact] = useState('');
+  const [password, setPassword] = useState('');
+
+  const saveData = () => {
+    fetch('http://192.168.240.199:3000/users/register', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        contact: contact,
+        password: password,
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then(response => {
+        Alert.alert('User Saved Successfully !');
+      })
+      .catch(err => {
+        Alert.alert('Something went wrong, Try again !');
+      });
+  };
 
   return (
     <SafeAreaView>
@@ -34,32 +59,43 @@ const Register = () => {
           <View style={styles.formInput}>
             <TextInput
               style={styles.textInput}
+              onChangeText={e => {
+                setName(e);
+              }}
               placeholder="Enter your full name"
             />
           </View>
           <View style={styles.formInput}>
             <TextInput
               style={styles.textInput}
+              onChangeText={e => {
+                setEmail(e);
+              }}
               placeholder="Enter your email address"
             />
           </View>
           <View style={styles.formInput}>
             <TextInput
               style={styles.textInput}
-              placeholder="Enter your contact"
-              secureTextEntry={true}
+              onChangeText={e => {
+                setContact(e);
+              }}
+              placeholder="Enter your phone number"
             />
           </View>
           <View style={styles.formInput}>
             <TextInput
               style={styles.textInput}
+              onChangeText={e => {
+                setPassword(e);
+              }}
               placeholder="Password"
               secureTextEntry={true}
             />
           </View>
 
           <View style={styles.formInput}>
-            <TouchableOpacity style={styles.registerBtn}>
+            <TouchableOpacity style={styles.registerBtn} onPress={saveData}>
               <Text style={{textAlign: 'center', fontSize: 18, color: '#000'}}>
                 Register
               </Text>
@@ -84,7 +120,7 @@ const Register = () => {
                   fontSize: 16,
                   fontWeight: 'bold',
                   color: '#FFCB42',
-                  top:11
+                  top: 11,
                 }}>
                 Already have an account ? Login here !
               </Text>
@@ -98,12 +134,12 @@ const Register = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   bgImage: {
     width: '100%',
     height: 250,
-    bottom: 50
+    bottom: 50,
   },
   formInput: {
     padding: 10,
