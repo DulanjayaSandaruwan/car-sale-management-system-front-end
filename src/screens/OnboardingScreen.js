@@ -3,7 +3,6 @@ import {
   Text,
   StyleSheet,
   Image,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 import React from 'react';
@@ -23,9 +22,6 @@ export default function OnboardingScreen() {
           style={{height: 250, width: 350}}
           source={require('../assets/image1.png')}
         />
-        <TouchableOpacity>
-          <Text style={{top: 215, left: 150}}>Next</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.slide2}>
         <Text style={{bottom: 200, fontSize: 25, fontWeight: 'bold'}}>
@@ -35,9 +31,6 @@ export default function OnboardingScreen() {
           style={{height: 250, width: 300}}
           source={require('../assets/image2.png')}
         />
-        <TouchableOpacity>
-          <Text style={{top: 210, left: 150}}>Next</Text>
-        </TouchableOpacity>
       </View>
       <View style={styles.slide3}>
         <Text style={{bottom: 185, fontSize: 25, fontWeight: 'bold'}}>

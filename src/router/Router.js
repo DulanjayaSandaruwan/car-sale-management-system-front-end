@@ -6,6 +6,7 @@ import OnboardingScreen from '../screens/OnboardingScreen';
 import LoginPage from '../screens/LoginPage';
 import Register from '../screens/Register';
 import HomePage from '../screens/HomePage';
+import AddCar from '../screens/AddCar';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,6 +38,11 @@ export default function Router() {
           options={{headerShown: false}}
           name="HomePage"
           component={HomePage}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="AddCar"
+          component={AddCar}
         />
       </Stack.Navigator>
     </NavigationContainer>
