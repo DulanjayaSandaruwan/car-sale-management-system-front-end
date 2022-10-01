@@ -40,7 +40,7 @@ export default function HomePage() {
         <TouchableOpacity
           style={styles.addCarBtn}
           onPress={() => {
-            navigation.navigate('ManageCar');
+            navigation.navigate('AddCar');
           }}>
           <Text style={{textAlign: 'center', fontSize: 20, color: '#000'}}>
             Add New Car
