@@ -7,11 +7,11 @@ import {
   Image,
   FlatList,
   PixelRatio,
-  ScrollView,
 } from 'react-native';
 import {Button, Flex, NativeBaseProvider} from 'native-base';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {storeCar} from './StoreCar';
 
 export default function HomePage() {
   const navigation = useNavigation();
@@ -20,6 +20,8 @@ export default function HomePage() {
 
   const [resizableBlock, setResizableBlock] = useState(40);
   const [displayForResizing, setDisplayForResizing] = useState('none');
+
+  const [checkSelectedCarReg, setCheckSelectedCarReg] = useState(null);
 
   useEffect(() => {
     dataList.splice(0, dataList.length);
@@ -77,7 +79,7 @@ export default function HomePage() {
         <FlatList
           style={{
             position: 'absolute',
-            top: 80,
+            top: 30,
           }}
           data={dataList}
           renderItem={({item}) => (
@@ -86,9 +88,13 @@ export default function HomePage() {
                 backgroundColor: '#fff',
                 position: 'relative',
                 borderWidth: 1,
-                marginBottom: '5%',
+                borderColor: '#FFCB42',
+                marginBottom: '1%',
                 padding: 5,
-                height: PixelRatio.getPixelSizeForLayoutSize(resizableBlock),
+                height:
+                  item.regNo === checkSelectedCarReg
+                    ? PixelRatio.getPixelSizeForLayoutSize(resizableBlock)
+                    : PixelRatio.getPixelSizeForLayoutSize(40),
                 display: 'flex',
                 flexDirection: 'column',
               }}
@@ -99,6 +105,7 @@ export default function HomePage() {
               onPress={() => {
                 setResizableBlock(60);
                 setDisplayForResizing('flex');
+                setCheckSelectedCarReg(item.regNo);
               }}>
               <Flex
                 flexDirection={'row'}
@@ -113,16 +120,12 @@ export default function HomePage() {
                     position: 'relative',
                     width: '100%',
                     height: '100%',
-                    borderWidth: 1,
-                    borderColor: 'black',
                   }}>
                   <Flex
                     style={{
                       position: 'relative',
                       width: '50%',
                       height: '100%',
-                      borderWidth: 1,
-                      borderColor: 'black',
                     }}>
                     <Image
                       resizeMode="stretch"
@@ -134,15 +137,11 @@ export default function HomePage() {
                     style={{
                       width: '50%',
                       height: '100%',
-                      borderWidth: 1,
-                      borderColor: 'black',
                     }}>
                     <Flex
                       style={{
                         width: '100%',
                         height: '30%',
-                        borderWidth: 1,
-                        borderColor: 'white',
                       }}>
                       <Text
                         color={'white'}
@@ -155,8 +154,6 @@ export default function HomePage() {
                       style={{
                         width: '100%',
                         height: '30%',
-                        borderWidth: 1,
-                        borderColor: 'white',
                       }}>
                       <Text
                         color={'white'}
@@ -169,8 +166,6 @@ export default function HomePage() {
                       style={{
                         width: '100%',
                         height: '40%',
-                        borderWidth: 1,
-                        borderColor: 'white',
                         justifyContent: 'center',
                       }}>
                       <Text
@@ -189,7 +184,10 @@ export default function HomePage() {
                   position: 'relative',
                   width: '100%',
                   height: PixelRatio.getPixelSizeForLayoutSize(20),
-                  display: displayForResizing,
+                  display:
+                    item.regNo === checkSelectedCarReg
+                      ? displayForResizing
+                      : 'none',
                 }}>
                 <Flex
                   flexDirection={'row'}
@@ -199,14 +197,13 @@ export default function HomePage() {
                     position: 'relative',
                     width: '100%',
                     height: '100%',
-                    borderWidth: 1,
-                    borderColor: 'black',
                   }}>
                   <Button
                     fontSize={'sm'}
                     style={{height: '80%'}}
                     backgroundColor="#FFCB42"
                     onPress={e => {
+                      storeCar.regNo = item.regNo;
                       navigation.navigate('ManageCar');
                     }}>
                     Manage Details
