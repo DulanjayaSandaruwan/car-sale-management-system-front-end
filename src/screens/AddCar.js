@@ -7,37 +7,23 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import ImagePicker from 'react-native-image-picker';
+import {launchImageLibrary} from 'react-native-image-picker';
 
-export default function AddCar({image, onImagePicked}) {
+export default function AddCar() {
   const navigation = useNavigation();
 
-  const [selectedImage, setSelectedImage] = useState();
-
-  useEffect(() => {
-    if (image) {
-      console.log('useEffect: ' + image);
-      setSelectedImage({uri: image});
-    }
-  }, [image]);
-
-  pickImageHandler = () => {
-    ImagePicker.showImagePicker(
-      {title: 'Pick an Image', maxWidth: 800, maxHeight: 600},
-      response => {
-        if (response.error) {
-          console.log('image error');
-        } else {
-          console.log('Image: ' + response.uri);
-          setSelectedImage({uri: response.uri});
-          onImagePicked({uri: response.uri});
-        }
-      },
-    );
-  };
+  const [carObj, setCarObj] = useState({
+    image: '',
+    regNo: '',
+    brand: '',
+    price: '',
+    fuelType: '',
+    transmissionType: '',
+  });
 
   return (
     <SafeAreaView>
@@ -64,44 +50,135 @@ export default function AddCar({image, onImagePicked}) {
           </View>
         </View>
         <View style={{padding: 10}}>
-          <View style={styles.imageMain}>
-            <View style={styles.imageContainer}>
-              <Image source={selectedImage} style={styles.previewImage} />
-            </View>
-            <View style={styles.addImageBtn}>
-              <TouchableOpacity
-                style={styles.loginBtn}
-                onPress={this.pickImageHandler}>
-                <Text
-                  style={{textAlign: 'center', fontSize: 14, color: '#000'}}>
-                  Upload Image
-                </Text>
-              </TouchableOpacity>
-            </View>
+          <View style={styles.formInput}>
+            <TextInput
+              style={styles.textInput}
+              placeholder="Image"
+              value={carObj.image}
+              editable={false}
+            />
+          </View>
+          <View style={styles.addImageBtn}>
+            <TouchableOpacity
+              style={styles.loginBtn}
+              onPress={async e => {
+                const result = await launchImageLibrary({
+                  mediaType: 'photo',
+                  selectionLimit: 13,
+                });
+                let images = result.assets;
+                images.forEach(e => {
+                  let uri = e.uri;
+                  console.log(uri);
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      image: uri,
+                    };
+                  });
+                });
+              }}>
+              <Text style={{textAlign: 'center', fontSize: 14, color: '#000'}}>
+                Upload Image
+              </Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.formInput}>
             <TextInput
+              onChangeText={e => {
+                setCarObj(prevState => {
+                  return {
+                    ...carObj,
+                    regNo: e,
+                  };
+                });
+              }}
+              value={carObj.regNo}
               style={styles.textInput}
               placeholder="Enter car Reg No."
             />
           </View>
           <View style={styles.formInput}>
-            <TextInput style={styles.textInput} placeholder="Enter car brand" />
-          </View>
-          <View style={styles.formInput}>
-            <TextInput style={styles.textInput} placeholder="Enter car price" />
-          </View>
-          <View style={styles.formInput}>
-            <TextInput style={styles.textInput} placeholder="Enter fuel type" />
+            <TextInput
+              onChangeText={e => {
+                setCarObj(prevState => {
+                  return {
+                    ...carObj,
+                    brand: e,
+                  };
+                });
+              }}
+              value={carObj.brand}
+              style={styles.textInput}
+              placeholder="Enter car brand"
+            />
           </View>
           <View style={styles.formInput}>
             <TextInput
+              onChangeText={e => {
+                setCarObj(prevState => {
+                  return {
+                    ...carObj,
+                    price: e,
+                  };
+                });
+              }}
+              value={carObj.price}
+              style={styles.textInput}
+              placeholder="Enter car price"
+            />
+          </View>
+          <View style={styles.formInput}>
+            <TextInput
+              onChangeText={e => {
+                setCarObj(prevState => {
+                  return {
+                    ...carObj,
+                    fuelType: e,
+                  };
+                });
+              }}
+              value={carObj.fuelType}
+              style={styles.textInput}
+              placeholder="Enter fuel type"
+            />
+          </View>
+          <View style={styles.formInput}>
+            <TextInput
+              onChangeText={e => {
+                setCarObj(prevState => {
+                  return {
+                    ...carObj,
+                    transmissionType: e,
+                  };
+                });
+              }}
+              value={carObj.transmissionType}
               style={styles.textInput}
               placeholder="Enter transmission type"
             />
           </View>
           <View style={styles.formInput}>
-            <TouchableOpacity style={styles.loginBtn}>
+            <TouchableOpacity
+              onPress={async e => {
+                console.log(carObj);
+                const res = await fetch('http://192.168.240.199:3000/car', {
+                  method: 'POST',
+                  body: JSON.stringify(carObj),
+                  headers: {
+                    'Content-Type': 'application/json;charset=UTF-8',
+                  },
+                })
+                  .then(res => {
+                    console.log(res);
+                    Alert.alert('Car Saved Successfully');
+                  })
+                  .catch(res => {
+                    console.log(res);
+                    Alert.alert('Car Saving is Unsuccessful');
+                  });
+              }}
+              style={styles.loginBtn}>
               <Text style={{textAlign: 'center', fontSize: 18, color: '#000'}}>
                 Save
               </Text>
@@ -158,6 +235,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: 170,
     height: 45,
+    left: 90,
   },
   previewImage: {
     width: '100%',

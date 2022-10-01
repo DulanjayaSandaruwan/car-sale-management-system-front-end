@@ -5,13 +5,34 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  ScrollView,
+  FlatList,
+  PixelRatio,
+  Button,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 export default function HomePage() {
   const navigation = useNavigation();
+
+  const [dataList, setDataList] = useState([]);
+
+  const [resizableBlock, setResizableBlock] = useState(40);
+  const [displayForResizing, setDisplayForResizing] = useState('none');
+
+  useEffect(() => {
+    dataList.splice(0, dataList.length);
+    const loadData = async () => {
+      let res = await fetch('http://192.168.240.199:3000/car', {method: 'GET'})
+        .then(async res => {
+          let arr = await res.json();
+          console.log(arr);
+          setDataList(arr);
+        })
+        .catch(async res => {});
+    };
+    loadData();
+  }, [dataList]);
 
   return (
     <SafeAreaView>
@@ -28,7 +49,11 @@ export default function HomePage() {
             }}>
             Home
           </Text>
-          <TouchableOpacity style={{left: 350}}>
+          <TouchableOpacity
+            style={{left: 350}}
+            onPress={() => {
+              navigation.navigate('Settings');
+            }}>
             <Image
               source={require('../assets/setting.png')}
               style={{width: 30, height: 30}}
@@ -47,6 +72,148 @@ export default function HomePage() {
           </Text>
         </TouchableOpacity>
       </View>
+      <FlatList
+        style={{
+          position: 'absolute',
+          top: 80,
+        }}
+        data={dataList}
+        renderItem={({item}) => (
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#1abc9c',
+              position: 'relative',
+              borderWidth: 1,
+              marginBottom: '5%',
+              padding: 5,
+              height: PixelRatio.getPixelSizeForLayoutSize(resizableBlock),
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+            onLongPress={() => {
+              setResizableBlock(40);
+              setDisplayForResizing('none');
+            }}
+            onPress={() => {
+              setResizableBlock(60);
+              setDisplayForResizing('flex');
+            }}>
+            <Flex
+              flexDirection={'row'}
+              style={{
+                position: 'relative',
+                width: '100%',
+                height: PixelRatio.getPixelSizeForLayoutSize(36),
+              }}>
+              <Flex
+                flexDirection={'row'}
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  height: '100%',
+                  borderWidth: 1,
+                  borderColor: 'black',
+                }}>
+                <Flex
+                  style={{
+                    position: 'relative',
+                    width: '50%',
+                    height: '100%',
+                    borderWidth: 1,
+                    borderColor: 'black',
+                  }}>
+                  <Image
+                    resizeMode="stretch"
+                    source={{uri: item.image}}
+                    style={{width: '100%', height: '100%'}}></Image>
+                </Flex>
+                <Flex
+                  flexDirection={'column'}
+                  style={{
+                    width: '50%',
+                    height: '100%',
+                    borderWidth: 1,
+                    borderColor: 'black',
+                  }}>
+                  <Flex
+                    style={{
+                      width: '100%',
+                      height: '30%',
+                      borderWidth: 1,
+                      borderColor: 'white',
+                    }}>
+                    <Text
+                      color={'white'}
+                      fontSize={'md'}
+                      style={{marginBottom: 10, marginLeft: '10%'}}>
+                      Brand : {item.brand}
+                    </Text>
+                  </Flex>
+                  <Flex
+                    style={{
+                      width: '100%',
+                      height: '30%',
+                      borderWidth: 1,
+                      borderColor: 'white',
+                    }}>
+                    <Text
+                      color={'white'}
+                      fontSize={'md'}
+                      style={{marginBottom: 10, marginLeft: '10%'}}>
+                      Reg No : {item.regNo}
+                    </Text>
+                  </Flex>
+                  <Flex
+                    style={{
+                      width: '100%',
+                      height: '40%',
+                      borderWidth: 1,
+                      borderColor: 'white',
+                      justifyContent: 'center',
+                    }}>
+                    <Text
+                      color={'white'}
+                      fontSize={'md'}
+                      style={{marginBottom: 10, marginLeft: '10%'}}>
+                      Price : {item.price}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </Flex>
+            </Flex>
+            <Flex
+              flexDirection={'row'}
+              style={{
+                position: 'relative',
+                width: '100%',
+                height: PixelRatio.getPixelSizeForLayoutSize(20),
+                display: displayForResizing,
+              }}>
+              <Flex
+                flexDirection={'row'}
+                alignItems={'center'}
+                justifyContent={'center'}
+                style={{
+                  position: 'relative',
+                  width: '100%',
+                  height: '100%',
+                  borderWidth: 1,
+                  borderColor: 'black',
+                }}>
+                <Button
+                  fontSize={'sm'}
+                  style={{height: '80%'}}
+                  variant={'subtle'}
+                  onPress={e => {
+                    navigation.navigate('ManageCar');
+                  }}>
+                  Manage Details
+                </Button>
+              </Flex>
+            </Flex>
+          </TouchableOpacity>
+        )}
+      />
     </SafeAreaView>
   );
 }

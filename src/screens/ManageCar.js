@@ -7,37 +7,13 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Flex
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import {useNavigation} from '@react-navigation/native';
-import ImagePicker from 'react-native-image-picker';
 
-export default function AddCar({image, onImagePicked}) {
+export default function AddCar() {
   const navigation = useNavigation();
-
-  const [selectedImage, setSelectedImage] = useState();
-
-  useEffect(() => {
-    if (image) {
-      console.log('useEffect: ' + image);
-      setSelectedImage({uri: image});
-    }
-  }, [image]);
-
-  pickImageHandler = () => {
-    ImagePicker.showImagePicker(
-      {title: 'Pick an Image', maxWidth: 800, maxHeight: 600},
-      response => {
-        if (response.error) {
-          console.log('image error');
-        } else {
-          console.log('Image: ' + response.uri);
-          setSelectedImage({uri: response.uri});
-          onImagePicked({uri: response.uri});
-        }
-      },
-    );
-  };
 
   return (
     <SafeAreaView>
@@ -65,16 +41,12 @@ export default function AddCar({image, onImagePicked}) {
         </View>
         <View style={{padding: 10}}>
           <View style={styles.imageMain}>
-            <View style={styles.imageContainer}>
-              <Image source={selectedImage} style={styles.previewImage} />
-            </View>
+            
             <View style={styles.addImageBtn}>
-              <TouchableOpacity
-                style={styles.loginBtn}
-                onPress={this.pickImageHandler}>
+              <TouchableOpacity style={styles.loginBtn} onPress={openGallery}>
                 <Text
                   style={{textAlign: 'center', fontSize: 14, color: '#000'}}>
-                  Change Image
+                  Upload Image
                 </Text>
               </TouchableOpacity>
             </View>
