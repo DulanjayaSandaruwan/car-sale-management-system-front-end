@@ -73,8 +73,8 @@ export default function AddCar({image, onImagePicked}) {
                 style={styles.loginBtn}
                 onPress={this.pickImageHandler}>
                 <Text
-                  style={{textAlign: 'center', fontSize: 12, color: '#000'}}>
-                  Upload Image
+                  style={{textAlign: 'center', fontSize: 14, color: '#000'}}>
+                  Change Image
                 </Text>
               </TouchableOpacity>
             </View>
@@ -101,10 +101,21 @@ export default function AddCar({image, onImagePicked}) {
             />
           </View>
           <View style={styles.formInput}>
-            <TouchableOpacity style={styles.loginBtn}>
-              <Text style={{textAlign: 'center', fontSize: 18, color: '#000'}}>
-                Save
-              </Text>
+            <TouchableOpacity style={{left: 260}}>
+              <Image
+                source={require('../assets/update.png')}
+                style={{width: 35, height: 35}}
+              />
+              <Text style={{color: '#FF884B', fontSize: 16}}>Update</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.formInput}>
+            <TouchableOpacity style={{left: 320, bottom: 75}}>
+              <Image
+                source={require('../assets/delete.png')}
+                style={{width: 35, height: 35}}
+              />
+              <Text style={{color: '#FF884B', fontSize: 16}}>Delete</Text>
             </TouchableOpacity>
           </View>
         </View>

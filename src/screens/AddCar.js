@@ -73,7 +73,7 @@ export default function AddCar({image, onImagePicked}) {
                 style={styles.loginBtn}
                 onPress={this.pickImageHandler}>
                 <Text
-                  style={{textAlign: 'center', fontSize: 12, color: '#000'}}>
+                  style={{textAlign: 'center', fontSize: 14, color: '#000'}}>
                   Upload Image
                 </Text>
               </TouchableOpacity>

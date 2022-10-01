@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {
   SafeAreaView,
@@ -9,10 +9,16 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  Alert,
 } from 'react-native';
 
 export default function LoginPage() {
   const navigation = useNavigation();
+
+  const [loginObj, setLoginObj] = useState({
+    email: '',
+    password: '',
+  });
 
   return (
     <SafeAreaView>
@@ -32,12 +38,30 @@ export default function LoginPage() {
           </View>
           <View style={styles.formInput}>
             <TextInput
+              onChangeText={e => {
+                setLoginObj(prevState => {
+                  return {
+                    ...loginObj,
+                    email: e,
+                  };
+                });
+              }}
+              value={loginObj.email}
               style={styles.textInput}
               placeholder="Enter your email address"
             />
           </View>
           <View style={styles.formInput}>
             <TextInput
+              onChangeText={e => {
+                setLoginObj(prevState => {
+                  return {
+                    ...loginObj,
+                    password: e,
+                  };
+                });
+              }}
+              value={loginObj.password}
               style={styles.textInput}
               placeholder="Password"
               secureTextEntry={true}
@@ -53,10 +77,39 @@ export default function LoginPage() {
           </View>
           <View style={styles.formInput}>
             <TouchableOpacity
-              style={styles.loginBtn}
-              onPress={() => {
-                navigation.navigate('HomePage');
-              }}>
+              onPress={async () => {
+                if ((loginObj.email === '') | (loginObj.password === '')) {
+                  Alert.alert('User Login is Unsuccessful');
+                } else {
+                  let res = await fetch(
+                    'http://192.168.240.199:3000/users/loginCheck?email=' +
+                      loginObj.email +
+                      '&password=' +
+                      loginObj.password,
+                    {
+                      method: 'GET',
+                    },
+                  )
+                    .then(async res => {
+                      let bool = await res.json();
+                      console.log(bool);
+                      if (bool === true) {
+                        console.log(bool);
+                        setLoginObj(prevState => {
+                          return {
+                            email: '',
+                            password: '',
+                          };
+                        });
+                        navigation.navigate('HomePage');
+                      }
+                    })
+                    .catch(async res => {
+                      Alert.alert('User Login is Unsuccessful');
+                    });
+                }
+              }}
+              style={styles.loginBtn}>
               <Text style={{textAlign: 'center', fontSize: 18, color: '#000'}}>
                 Login
               </Text>
