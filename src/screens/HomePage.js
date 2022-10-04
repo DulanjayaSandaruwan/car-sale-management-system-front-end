@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     borderColor: '#AEBDCA',
     width: 230,
     left: 145,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF8BC',
   },
   formInput: {
     marginTop: 1,
