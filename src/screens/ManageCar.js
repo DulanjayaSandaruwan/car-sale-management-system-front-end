@@ -23,7 +23,8 @@ export default function AddCar() {
     brand: '',
     price: '',
     fuelType: '',
-    transmissionType: '',
+    date: '',
+    location: '',
   });
 
   useEffect(() => {
@@ -62,7 +63,7 @@ export default function AddCar() {
         <View style={{padding: 10}}>
           <View style={styles.formInput}>
             <TextInput
-              style={styles.textInput}
+              style={styles.imageContainer}
               placeholder="Image"
               value={carObj.image}
               editable={false}
@@ -93,141 +94,160 @@ export default function AddCar() {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    regNo: e,
-                  };
-                });
-              }}
-              value={carObj.regNo}
-              style={styles.textInput}
-              placeholder="Enter car Reg No."
-            />
+          <View style={styles.form}>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      regNo: e,
+                    };
+                  });
+                }}
+                value={carObj.regNo}
+                style={styles.textInput}
+                placeholder="Enter car Reg No."
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      brand: e,
+                    };
+                  });
+                }}
+                value={carObj.brand}
+                style={styles.textInput}
+                placeholder="Enter car brand"
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      price: e,
+                    };
+                  });
+                }}
+                value={carObj.price}
+                style={styles.textInput}
+                placeholder="Enter car price"
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      fuelType: e,
+                    };
+                  });
+                }}
+                value={carObj.fuelType}
+                style={styles.textInput}
+                placeholder="Enter fuel type"
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      date: e,
+                    };
+                  });
+                }}
+                value={carObj.date}
+                style={styles.textInput}
+                placeholder="Enter Date"
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      location: e,
+                    };
+                  });
+                }}
+                value={carObj.location}
+                style={styles.textInput}
+                placeholder="Enter location"
+              />
+            </View>
           </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    brand: e,
-                  };
-                });
-              }}
-              value={carObj.brand}
-              style={styles.textInput}
-              placeholder="Enter car brand"
-            />
-          </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    price: e,
-                  };
-                });
-              }}
-              value={carObj.price}
-              style={styles.textInput}
-              placeholder="Enter car price"
-            />
-          </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    fuelType: e,
-                  };
-                });
-              }}
-              value={carObj.fuelType}
-              style={styles.textInput}
-              placeholder="Enter fuel type"
-            />
-          </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    transmissionType: e,
-                  };
-                });
-              }}
-              value={carObj.transmissionType}
-              style={styles.textInput}
-              placeholder="Enter transmission type"
-            />
-          </View>
-          <View style={styles.formInput}>
-            <TouchableOpacity
-              onPress={async e => {
-                carObj.regNo != ''
-                  ? fetch(
-                      'http://192.168.240.199:3000/car?regNo=' + carObj.regNo,
-                      {
-                        method: 'PUT',
-                        body: JSON.stringify(carObj),
-                        headers: {
-                          'Content-Type': 'application/json;charset=UTF-8',
+          <View style={styles.btn}>
+            <View style={styles.formInput}>
+              <TouchableOpacity
+                onPress={async e => {
+                  carObj.regNo != ''
+                    ? fetch(
+                        'http://192.168.240.199:3000/car?regNo=' + carObj.regNo,
+                        {
+                          method: 'PUT',
+                          body: JSON.stringify(carObj),
+                          headers: {
+                            'Content-Type': 'application/json;charset=UTF-8',
+                          },
                         },
-                      },
-                    )
-                      .then(res => {
-                        console.log(res);
-                        Alert.alert('Car Updated Successfully');
-                      })
-                      .catch(res => {
-                        console.log(res);
-                        Alert.alert('Car Updating is Unsuccessful');
-                      })
-                  : Alert.alert('Please Fill Relevant Fields');
-              }}
-              style={{left: 260}}>
-              <Image
-                source={require('../assets/update.png')}
-                style={{width: 35, height: 35}}
-              />
-              <Text style={{color: '#FF884B', fontSize: 16}}>Update</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.formInput}>
-            <TouchableOpacity
-              onPress={async e => {
-                carObj.regNo != ''
-                  ? fetch(
-                      'http://192.168.240.199:3000/car?regNo=' + carObj.regNo,
-                      {
-                        method: 'DELETE',
-                      },
-                    )
-                      .then(res => {
-                        console.log(res);
-                        Alert.alert('Car Deleted Successfully');
-                      })
-                      .catch(res => {
-                        console.log(res);
+                      )
+                        .then(res => {
+                          console.log(res);
+                          Alert.alert('Car Updated Successfully');
+                        })
+                        .catch(res => {
+                          console.log(res);
+                          Alert.alert('Car Updating is Unsuccessful');
+                        })
+                    : Alert.alert('Please Fill Relevant Fields');
+                }}
+                style={{left: 260}}>
+                <Image
+                  source={require('../assets/update.png')}
+                  style={{width: 35, height: 35}}
+                />
+                <Text style={{color: '#FF884B', fontSize: 16}}>Update</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.formInput}>
+              <TouchableOpacity
+                onPress={async e => {
+                  carObj.regNo != ''
+                    ? fetch(
+                        'http://192.168.240.199:3000/car?regNo=' + carObj.regNo,
+                        {
+                          method: 'DELETE',
+                        },
+                      )
+                        .then(res => {
+                          console.log(res);
+                          Alert.alert('Car Deleted Successfully');
+                        })
+                        .catch(res => {
+                          console.log(res);
 
-                        Alert.alert('Car Deleting is Unsuccessful');
-                      })
-                  : Alert.alert('Please Fill Relevant Fields');
-              }}
-              style={{left: 320, bottom: 75}}>
-              <Image
-                source={require('../assets/delete.png')}
-                style={{width: 35, height: 35}}
-              />
-              <Text style={{color: '#FF884B', fontSize: 16}}>Delete</Text>
-            </TouchableOpacity>
+                          Alert.alert('Car Deleting is Unsuccessful');
+                        })
+                    : Alert.alert('Please Fill Relevant Fields');
+                }}
+                style={{left: 320, bottom: 75}}>
+                <Image
+                  source={require('../assets/delete.png')}
+                  style={{width: 35, height: 35}}
+                />
+                <Text style={{color: '#FF884B', fontSize: 16}}>Delete</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -249,6 +269,7 @@ const styles = StyleSheet.create({
   formInput: {
     marginTop: 3,
     padding: 10,
+    bottom: 20,
   },
   textInput: {
     padding: 10,
@@ -280,10 +301,33 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: 170,
     height: 45,
-    left: 90
+    left: 90,
   },
   previewImage: {
     width: '100%',
     height: '100%',
   },
+  addImageBtn: {
+    margin: 8,
+    backgroundColor: '#FFCB42',
+    borderRadius: 20,
+    width: 120,
+    height: 45,
+    left: 235,
+    bottom: 113,
+  },
+  imageContainer: {
+    marginTop: 15,
+    borderWidth: 1,
+    borderColor: '#FFCB42',
+    backgroundColor: '#eee',
+    width: '60%',
+    height: 100,
+  },
+  form: {
+    bottom: 60,
+  },
+  btn: {
+    bottom: 50
+  }
 });

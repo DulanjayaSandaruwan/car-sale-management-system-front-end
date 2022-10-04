@@ -9,6 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   Text,
+  Alert,
 } from 'react-native';
 
 const Register = () => {

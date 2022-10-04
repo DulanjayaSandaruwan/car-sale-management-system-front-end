@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   PixelRatio,
+  TextInput,
 } from 'react-native';
 import {Button, Flex, NativeBaseProvider} from 'native-base';
 import React, {useEffect, useState} from 'react';
@@ -23,17 +24,20 @@ export default function HomePage() {
 
   const [checkSelectedCarReg, setCheckSelectedCarReg] = useState(null);
 
-  useEffect(() => {
+  const [searchTxt, setSearchTxt] = useState(null);
+
+  const loadData = async () => {
     dataList.splice(0, dataList.length);
-    const loadData = async () => {
-      let res = await fetch('http://192.168.240.199:3000/car', {method: 'GET'})
-        .then(async res => {
-          let arr = await res.json();
-          console.log(arr);
-          setDataList(arr);
-        })
-        .catch(async res => {});
-    };
+    let res = await fetch('http://192.168.240.199:3000/car', {method: 'GET'})
+      .then(async res => {
+        let arr = await res.json();
+        console.log(arr);
+        setDataList(arr);
+      })
+      .catch(async res => {});
+  };
+
+  useEffect(() => {
     loadData();
   }, [dataList]);
 
@@ -52,19 +56,49 @@ export default function HomePage() {
             }}>
             Home
           </Text>
+          <View style={styles.formInput}>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={async e => {
+                setSearchTxt(e);
+                if (e == '') {
+                  loadData();
+                }
+              }}
+              value={searchTxt}
+              placeholder="Enter Date/Location"
+            />
+          </View>
           <TouchableOpacity
-            style={{left: 350}}
-            onPress={() => {
-              navigation.navigate('Settings');
-            }}>
+            onPress={async () => {
+              console.log(searchTxt);
+              searchTxt == ''
+                ? loadData()
+                : await fetch(
+                    'http://192.168.240.199:3000/car/search?location=' +
+                      searchTxt +
+                      '&date=' +
+                      searchTxt,
+                    {
+                      method: 'GET',
+                    },
+                  )
+                    .then(async res => {
+                      let arr = await res.json();
+                      console.log(arr);
+                      setDataList(arr);
+                    })
+                    .catch(async res => {});
+            }}
+            style={{left: 340, bottom: 70}}>
             <Image
-              source={require('../assets/setting.png')}
-              style={{width: 30, height: 30}}
+              source={require('../assets/search.png')}
+              style={{width: 40, height: 30}}
             />
           </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.formInput}>
+      <View style={styles.addNewCarBtn}>
         <TouchableOpacity
           style={styles.addCarBtn}
           onPress={() => {
@@ -141,37 +175,37 @@ export default function HomePage() {
                     <Flex
                       style={{
                         width: '100%',
-                        height: '30%',
+                        height: '35%',
                       }}>
                       <Text
                         color={'white'}
-                        fontSize={'md'}
-                        style={{marginBottom: 10, marginLeft: '10%'}}>
+                        fontSize={'sm'}
+                        style={{marginBottom: 5, marginLeft: '10%'}}>
                         Brand : {item.brand}
                       </Text>
                     </Flex>
                     <Flex
                       style={{
                         width: '100%',
-                        height: '30%',
+                        height: '35%',
                       }}>
                       <Text
                         color={'white'}
-                        fontSize={'md'}
-                        style={{marginBottom: 10, marginLeft: '10%'}}>
+                        fontSize={'sm'}
+                        style={{marginBottom: 5, marginLeft: '10%'}}>
                         Reg No : {item.regNo}
                       </Text>
                     </Flex>
                     <Flex
                       style={{
                         width: '100%',
-                        height: '40%',
+                        height: '35%',
                         justifyContent: 'center',
                       }}>
                       <Text
                         color={'white'}
-                        fontSize={'md'}
-                        style={{marginBottom: 10, marginLeft: '10%'}}>
+                        fontSize={'sm'}
+                        style={{marginBottom: 5, marginLeft: '10%'}}>
                         Price : {item.price}
                       </Text>
                     </Flex>
@@ -202,6 +236,7 @@ export default function HomePage() {
                     fontSize={'sm'}
                     style={{height: '80%'}}
                     backgroundColor="#FFCB42"
+                    borderLeftRadius={5}
                     onPress={e => {
                       storeCar.regNo = item.regNo;
                       navigation.navigate('ManageCar');
@@ -229,7 +264,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
   },
-  formInput: {
+  addNewCarBtn: {
     top: 690,
     padding: 10,
   },
@@ -237,5 +272,20 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: '#FFCB42',
     borderRadius: 30,
+  },
+  textInput: {
+    padding: 10,
+    fontSize: 16,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#AEBDCA',
+    width: 230,
+    left: 145,
+    backgroundColor: '#fff',
+  },
+  formInput: {
+    marginTop: 1,
+    padding: 10,
+    bottom: 20,
   },
 });

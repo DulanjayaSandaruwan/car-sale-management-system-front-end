@@ -22,7 +22,8 @@ export default function AddCar() {
     brand: '',
     price: '',
     fuelType: '',
-    transmissionType: '',
+    date: '',
+    location: '',
   });
 
   return (
@@ -52,7 +53,7 @@ export default function AddCar() {
         <View style={{padding: 10}}>
           <View style={styles.formInput}>
             <TextInput
-              style={styles.textInput}
+              style={styles.imageContainer}
               placeholder="Image"
               value={carObj.image}
               editable={false}
@@ -83,106 +84,124 @@ export default function AddCar() {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    regNo: e,
-                  };
-                });
-              }}
-              value={carObj.regNo}
-              style={styles.textInput}
-              placeholder="Enter car Reg No."
-            />
-          </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    brand: e,
-                  };
-                });
-              }}
-              value={carObj.brand}
-              style={styles.textInput}
-              placeholder="Enter car brand"
-            />
-          </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    price: e,
-                  };
-                });
-              }}
-              value={carObj.price}
-              style={styles.textInput}
-              placeholder="Enter car price"
-            />
-          </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    fuelType: e,
-                  };
-                });
-              }}
-              value={carObj.fuelType}
-              style={styles.textInput}
-              placeholder="Enter fuel type"
-            />
-          </View>
-          <View style={styles.formInput}>
-            <TextInput
-              onChangeText={e => {
-                setCarObj(prevState => {
-                  return {
-                    ...carObj,
-                    transmissionType: e,
-                  };
-                });
-              }}
-              value={carObj.transmissionType}
-              style={styles.textInput}
-              placeholder="Enter transmission type"
-            />
-          </View>
-          <View style={styles.formInput}>
-            <TouchableOpacity
-              onPress={async e => {
-                console.log(carObj);
-                const res = await fetch('http://192.168.240.199:3000/car', {
-                  method: 'POST',
-                  body: JSON.stringify(carObj),
-                  headers: {
-                    'Content-Type': 'application/json;charset=UTF-8',
-                  },
-                })
-                  .then(res => {
-                    console.log(res);
-                    Alert.alert('Car Saved Successfully');
-                  })
-                  .catch(res => {
-                    console.log(res);
-                    Alert.alert('Car Saving is Unsuccessful');
+          <View style={styles.form}>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      regNo: e,
+                    };
                   });
-              }}
-              style={styles.loginBtn}>
-              <Text style={{textAlign: 'center', fontSize: 18, color: '#000'}}>
-                Save
-              </Text>
-            </TouchableOpacity>
+                }}
+                value={carObj.regNo}
+                style={styles.textInput}
+                placeholder="Enter car Reg No."
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      brand: e,
+                    };
+                  });
+                }}
+                value={carObj.brand}
+                style={styles.textInput}
+                placeholder="Enter car brand"
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      price: e,
+                    };
+                  });
+                }}
+                value={carObj.price}
+                style={styles.textInput}
+                placeholder="Enter car price"
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      fuelType: e,
+                    };
+                  });
+                }}
+                value={carObj.fuelType}
+                style={styles.textInput}
+                placeholder="Enter fuel type"
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      date: e,
+                    };
+                  });
+                }}
+                value={carObj.date}
+                style={styles.textInput}
+                placeholder="Enter Date"
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TextInput
+                onChangeText={e => {
+                  setCarObj(prevState => {
+                    return {
+                      ...carObj,
+                      location: e,
+                    };
+                  });
+                }}
+                value={carObj.location}
+                style={styles.textInput}
+                placeholder="Enter location"
+              />
+            </View>
+            <View style={styles.formInput}>
+              <TouchableOpacity
+                onPress={async e => {
+                  console.log(carObj);
+                  const res = await fetch('http://192.168.240.199:3000/car', {
+                    method: 'POST',
+                    body: JSON.stringify(carObj),
+                    headers: {
+                      'Content-Type': 'application/json;charset=UTF-8',
+                    },
+                  })
+                    .then(res => {
+                      console.log(res);
+                      Alert.alert('Car Saved Successfully');
+                    })
+                    .catch(res => {
+                      console.log(res);
+                      Alert.alert('Car Saving is Unsuccessful');
+                    });
+                }}
+                style={styles.loginBtn}>
+                <Text
+                  style={{textAlign: 'center', fontSize: 18, color: '#000'}}>
+                  Save
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ScrollView>
@@ -202,8 +221,20 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 25,
   },
   formInput: {
+    marginTop: 1,
+    padding: 10,
+    bottom: 20,
+  },
+  dateInput: {
+    padding: 10,
+    bottom: 20,
+    width: 240,
+  },
+  imageContainer: {
     marginTop: 3,
     padding: 10,
+    width: 50,
+    borderColor: '#AEBDCA',
   },
   textInput: {
     padding: 10,
@@ -233,12 +264,16 @@ const styles = StyleSheet.create({
     margin: 8,
     backgroundColor: '#FFCB42',
     borderRadius: 20,
-    width: 170,
+    width: 120,
     height: 45,
-    left: 90,
+    left: 235,
+    bottom: 113,
   },
   previewImage: {
     width: '100%',
     height: '100%',
+  },
+  form: {
+    bottom: 60,
   },
 });

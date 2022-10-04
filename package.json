@@ -17,6 +17,7 @@
     "native-base": "^3.4.17",
     "react": "18.1.0",
     "react-native": "0.70.1",
+    "react-native-date-picker": "^4.2.5",
     "react-native-fontawesome": "^7.0.0",
     "react-native-image-picker": "^4.10.0",
     "react-native-image-slider-box": "^2.0.6",
